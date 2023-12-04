@@ -1,7 +1,7 @@
 # Scorched Pelt: Robbery Tracker
 # You MUST have Python and pip bootstrap to run this window
 # To install dependencies just open the Install.bat file I've added, if you don't have pip reinstall python checking the pip bootstrap box
-## To run open TheWildWest.pyw
+## To run open ScorchedPelt.pyw
 
 ### Controls: (If asked I'll make them modifyable)
  - Use the \` or `~` button to start the robbing timer
