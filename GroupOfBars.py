@@ -26,7 +26,7 @@ class GroupOfBars(ClickableBox):
 
         longest_bar = max([bar.surface.get_width() for bar in self.bars])
         width = BAR_SPACING * 2 + longest_bar + 36 + 33
-        height = BAR_SPACING + len(self.bars) * (BAR_SPACING + 26)
+        height = 5 + BAR_SPACING + len(self.bars) * 31
         self.UpdateSize((width, height))
 
         self.surface = pygame.Surface((self.w, self.h))
