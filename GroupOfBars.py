@@ -1,5 +1,6 @@
 from ProgressBar import TimedProgressBar
 from ClickableBox import ClickableBox
+from ThemeManager import ThemeManager
 import pygame
 DECALS = []
 BANK_RESET_TIME = 12 * 60
@@ -14,11 +15,11 @@ def SetIconDecals(decals: dict):
 
 
 class GroupOfBars(ClickableBox):
-    def __init__(self, pos: tuple, theme_array: list):
+    def __init__(self, pos: tuple, themes: ThemeManager):
         super().__init__((*pos, 0, 0))
-        self.theme_array = theme_array
-        self.bank_bar = TimedProgressBar(BANK_RESET_TIME, 0, (400, 15), theme_array, 2, (2, 2), 'F1')
-        self.boat_bar = TimedProgressBar(BOAT_RESET_TIME, 0, (400, 15), theme_array, 3, (2, 2), 'F2')
+        self.themes = themes
+        self.bank_bar = TimedProgressBar(BANK_RESET_TIME, 0, (400, 15), themes, 'bank_color', (2, 2), 'F1')
+        self.boat_bar = TimedProgressBar(BOAT_RESET_TIME, 0, (400, 15), themes, 'boat_color', (2, 2), 'F2')
         self.bars = [
             self.bank_bar,
             self.boat_bar
@@ -32,7 +33,7 @@ class GroupOfBars(ClickableBox):
         self.surface = pygame.Surface((self.w, self.h))
 
     def GetSurface(self):
-        self.surface.fill((self.theme_array[4], self.theme_array[5])[self.hover])
+        self.surface.fill((self.themes.group_background, self.themes.group_background_hover)[self.hover])
         for i, bar in enumerate(self.bars):
             self.surface.blit(DECALS[i], (BAR_SPACING + 31, BAR_SPACING + i * 31))
             self.surface.blit(bar.GetSurface(), (BAR_SPACING + 31 + 33, 5 + BAR_SPACING + i * 31))
@@ -47,4 +48,4 @@ class GroupOfBars(ClickableBox):
     def Draw(self, target_surface: pygame.Surface, outline: bool):
         target_surface.blit(self.GetSurface(), (self.x, self.y))
         if outline:
-            pygame.draw.rect(target_surface, self.theme_array[6], (self.x, self.y, self.w, self.h), 3)
+            pygame.draw.rect(target_surface, self.themes.group_outline, (self.x, self.y, self.w, self.h), 3)

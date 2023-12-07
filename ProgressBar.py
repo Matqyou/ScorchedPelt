@@ -1,3 +1,4 @@
+from ThemeManager import ThemeManager
 from time import perf_counter
 from math import ceil
 import pygame
@@ -16,7 +17,7 @@ def SetProgressBarEndSound(sound: pygame.mixer.Sound) -> None:
 
 
 class ProgressBar:
-    def __init__(self, progress: float, size: tuple, theme_array: list, color_index: int,
+    def __init__(self, progress: float, size: tuple, themes: ThemeManager, color_key: str,
                  padding: tuple = (0, 0)):
         self.progress = progress
         self.w, self.h = size
@@ -24,8 +25,8 @@ class ProgressBar:
         self.y_inner = padding[1]
         self.w_inner = self.w - self.x_inner * 2
         self.h_inner = self.h - self.y_inner * 2
-        self.theme_array = theme_array
-        self.color_index = color_index
+        self.themes = themes
+        self.get_inner_color = lambda: getattr(self.themes, color_key)
 
         self.w_current = None
         self.surface = pygame.Surface(size)
@@ -37,17 +38,17 @@ class ProgressBar:
 
     def GetSurface(self):
         if self.update:
-            self.surface.fill(self.theme_array[0])
+            self.surface.fill(self.themes.bar_frame)
             self.w_current = round(self.w_inner * self.progress)
             pygame.draw.rect(self.surface, 0x000000, (self.x_inner, self.y_inner, self.w_inner, self.h_inner))
-            pygame.draw.rect(self.surface, self.theme_array[self.color_index], (self.x_inner, self.y_inner, self.w_current, self.h_inner))
+            pygame.draw.rect(self.surface, self.get_inner_color(), (self.x_inner, self.y_inner, self.w_current, self.h_inner))
         return self.surface
 
 
 class TimedProgressBar(ProgressBar):
-    def __init__(self, period_seconds: int, progress: float, size: tuple, theme_array: list,
-                 color_index: int, padding: tuple = (0, 0), button: str = None):
-        super().__init__(progress, size, theme_array, color_index, padding)
+    def __init__(self, period_seconds: int, progress: float, size: tuple, themes: ThemeManager,
+                 color_key: str, padding: tuple = (0, 0), button: str = None):
+        super().__init__(progress, size, themes, color_key, padding)
 
         self.period = period_seconds
         self.button = button

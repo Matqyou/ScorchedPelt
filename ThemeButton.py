@@ -1,19 +1,23 @@
 from ClickableBox import ClickableBox
+from ThemeManager import ThemeManager
 import pygame
 
 
 class ThemeButton(ClickableBox):
-    def __init__(self, rect: tuple, colors):
+    def __init__(self, rect: tuple, theme_key: str):
         super().__init__(rect)
-        self.colors = colors
+        self.theme_key = theme_key
         padding = 3
         self.x_inner = padding
         self.y_inner = padding
         self.w_inner = self.w - padding * 2
         self.h_inner = self.h - padding * 2
+
+        bar_frame = ThemeManager.themes[theme_key]['bar_frame']
+        group_background = ThemeManager.themes[theme_key]['group_background']
         self.surface = pygame.Surface((self.w, self.h))
-        self.surface.fill(self.colors[0])
-        pygame.draw.rect(self.surface, self.colors[4], (self.x_inner, self.y_inner, self.w_inner, self.h_inner))
+        self.surface.fill(bar_frame)
+        pygame.draw.rect(self.surface, group_background, (self.x_inner, self.y_inner, self.w_inner, self.h_inner))
         self.surface_hover = self.surface.copy()
         alpha_layer = pygame.Surface((self.w, self.h))
         alpha_layer.fill(0xFFFFFF)

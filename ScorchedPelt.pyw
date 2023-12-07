@@ -1,6 +1,7 @@
 from ProgressBar import SetProgressBarFont, SetProgressBarEndSound, TimedProgressBar
 from NewServerButton import SetButtonFont, NewServerButton
 from GroupOfBars import GroupOfBars, SetIconDecals
+from ThemeManager import ThemeManager
 from ThemeButton import ThemeButton
 from time import perf_counter
 from math import ceil
@@ -53,55 +54,24 @@ for key, new_size in resize_decals.items():
 SetIconDecals(decals)
 
 rob_decal = decals['rob']
-theme_colors = [
-    [
-        0x978052,  # 0 Bar frame
-        0xAAAA33,  # 1 Bar color rob
-        0xAA3333,  # 2 Bar color bank
-        0x3333AA,  # 3 Bar color boat
-        0x383226,  # 4 Group background
-        0x544B39,  # 5 Group background hover
-        0x993399,  # 6 Group outline
-        0x2D291F,  # 7 Window background
-    ],
-    [
-        0x513838,  # 0 Bar frame
-        0xAAAA33,  # 1 Bar color rob
-        0xAA3333,  # 2 Bar color bank
-        0x3333AA,  # 3 Bar color boat
-        0x160202,  # 4 Group background
-        0x2D1010,  # 5 Group background hover
-        0xB50000,  # 6 Group outline
-        0x0A0101,  # 7 Window background
-    ],
-    [
-        0x777777,  # 0 Bar frame
-        0xAAAA33,  # 1 Bar color rob
-        0xAA3333,  # 2 Bar color bank
-        0x3333AA,  # 3 Bar color boat
-        0x262626,  # 4 Group background
-        0x565656,  # 5 Group background hover
-        0x25C4C4,  # 6 Group outline
-        0x111111,  # 7 Window background
-    ]
+theme_keys = [
+    *ThemeManager.themes.keys()
 ]
-theme_buttons = [ThemeButton((WIDTH-30-33*i-10, 10, 30, 30), colors) for i, colors in enumerate(theme_colors)]
-current_theme = []
-current_theme[:] = theme_buttons[0].colors
+themes = ThemeManager()
+theme_buttons = [ThemeButton((WIDTH-30-33*i-10, 10, 30, 30), theme_key) for i, theme_key in enumerate(theme_keys)]
 
 
-def SetCurrentTheme(new_theme: list):
-    global current_theme
-    current_theme[:] = new_theme
+def SetCurrentTheme(new_theme_key: str):
+    themes.SetTheme(new_theme_key)
 
 
 for theme_button in theme_buttons:
-    theme_button.SetFunction(lambda colors=theme_button.colors: SetCurrentTheme(colors))
-robbing_progress_bar = TimedProgressBar(60, 0, (400, 15), current_theme, 1, (2, 2), '`')
-initial_group = GroupOfBars((10, 45+36), current_theme)
+    theme_button.SetFunction(lambda theme_key=theme_button.theme_key: SetCurrentTheme(theme_key))
+robbing_progress_bar = TimedProgressBar(60, 0, (400, 15), themes, 'rob_color', (2, 2), '`')
+initial_group = GroupOfBars((10, 45+36), themes)
 bar_groups = {0: initial_group}
 current_group = 0
-server_button = NewServerButton((10, 10, 125, 25), current_theme, (2, 2))
+server_button = NewServerButton((10, 10, 125, 25), themes, (2, 2))
 display = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
 pygame.display.set_caption('Scorched Pelt')
 pygame.display.set_icon(decals['icon'])
@@ -134,7 +104,7 @@ def CreateNewGroup():
     else:
         new_position = (10, 45+36)
         current_group = CURRENT_GROUP_ID
-    new_group = GroupOfBars(new_position, current_theme)
+    new_group = GroupOfBars(new_position, themes)
     bar_groups[CURRENT_GROUP_ID] = new_group
     new_group.SetFunction(lambda id_=CURRENT_GROUP_ID: SelectCurrentGroup(id_))
     new_group.SetFunction2(lambda id_=CURRENT_GROUP_ID: DeleteGroup(id_))
@@ -174,7 +144,7 @@ while Running:
     # Logic
     elapsed = ceil(perf_counter() - PROGRAM_TIMESTAMP)
     if elapsed >= 3600:
-        caption = f'Scorched Pelt | {elapsed // 3600:>02}:{(elapsed//60)%60:>02}:{elapsed % 60:>02}'
+        caption = f'Scorched Pelt | {elapsed // 3600:>02}:{(elapsed//60) % 60: >02}:{elapsed % 60:>02}'
     else:
         caption = f'Scorched Pelt | {elapsed // 60:>02}:{elapsed % 60:>02}'
     if LAST_CAPTION != caption:
@@ -189,7 +159,7 @@ while Running:
         theme_button.Tick(mouse_x, mouse_y)
 
     # Drawing
-    display.fill(current_theme[7])
+    display.fill(themes.window_background)
 
     server_button.Draw(display)
 
