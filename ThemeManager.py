@@ -10,7 +10,8 @@ class ThemeManager:
             'group_outline': 0x993399,
             'window_background': 0x2D291F,
             'toggle_on': 0x560000,
-            'toggle_outline': 0x911F1F
+            'toggle_outline': 0x911F1F,
+            'emptied_bar': 0x282828
         },
         'red': {
             'bar_frame': 0x513838,
@@ -22,7 +23,8 @@ class ThemeManager:
             'group_outline': 0xB50000,
             'window_background': 0x0A0101,
             'toggle_on': 0x720063,
-            'toggle_outline': 0xB542A7
+            'toggle_outline': 0xB542A7,
+            'emptied_bar': 0x282828
         },
         'gray': {
             'bar_frame': 0x777777,
@@ -34,7 +36,8 @@ class ThemeManager:
             'group_outline': 0x25C4C4,
             'window_background': 0x111111,
             'toggle_on': 0x1D5B23,
-            'toggle_outline': 0x39B544
+            'toggle_outline': 0x39B544,
+            'emptied_bar': 0x262300
         }
     }
 
@@ -49,6 +52,7 @@ class ThemeManager:
         self.window_background = None
         self.toggle_on = None
         self.toggle_outline = None
+        self.emptied_bar = None
         self.SetTheme('default')
 
     def SetTheme(self, theme_key: str):

@@ -40,8 +40,13 @@ class ProgressBar:
         if self.update:
             self.surface.fill(self.themes.bar_frame)
             self.w_current = round(self.w_inner * self.progress)
+            if self.progress > 0:
+                width = self.w_current
+            else:
+                width = self.w_current % self.w_inner
             pygame.draw.rect(self.surface, 0x000000, (self.x_inner, self.y_inner, self.w_inner, self.h_inner))
-            pygame.draw.rect(self.surface, self.get_inner_color(), (self.x_inner, self.y_inner, self.w_current, self.h_inner))
+            pygame.draw.rect(self.surface, (self.get_inner_color(), self.themes.emptied_bar)[self.progress < 0],
+                             (self.x_inner, self.y_inner, width, self.h_inner))
         return self.surface
 
 

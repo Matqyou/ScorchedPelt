@@ -4,7 +4,7 @@ from DecalsManager import DecalsManager
 from ClickableBox import ClickableBox
 from ThemeManager import ThemeManager
 import pygame
-import copy
+
 BANK_RESET_TIME = 12 * 60
 BOAT_RESET_TIME = 6 * 60 + 36
 
