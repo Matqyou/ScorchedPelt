@@ -29,6 +29,10 @@ SetProgressBarEndSound(end_sound)
 decal_paths = {
     'bank': 'Bank.png',
     'boat': 'Boat.png',
+    'bank_red': 'BankRed.png',
+    'boat_red': 'BoatRed.png',
+    'bank_gray': 'BankGray.png',
+    'boat_gray': 'BoatGray.png',
     'hitman': 'Hitman.png',
     'icon': 'Icon.png'
 }
@@ -38,6 +42,10 @@ text_decals = {
 resize_decals = {
     'bank': (26, 26),
     'boat': (26, 26),
+    'bank_red': (26, 26),
+    'boat_red': (26, 26),
+    'bank_gray': (26, 26),
+    'boat_gray': (26, 26),
     'rob': (26, 26),
     'hitman': (20, 20),
     'icon': (32, 32)

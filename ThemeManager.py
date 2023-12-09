@@ -40,8 +40,11 @@ class ThemeManager:
             'emptied_bar': 0x262300
         }
     }
+    num_themes = len(themes)
 
     def __init__(self):
+        self.theme_index = None
+
         self.bar_frame = None
         self.rob_color = None
         self.bank_color = None
@@ -59,6 +62,7 @@ class ThemeManager:
         if theme_key not in self.themes:
             return
 
+        self.theme_index = list(self.themes.keys()).index(theme_key)
         for key, value in self.themes[theme_key].items():
             setattr(self, key, value)
 

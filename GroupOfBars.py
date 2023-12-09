@@ -23,7 +23,9 @@ class GroupOfBars(ClickableBox):
             self.bank_bar,
             self.boat_bar
         ]
-        self.bar_icons = [self.decals.bank, self.decals.boat]
+        self.bar_icons = [[self.decals.bank, self.decals.boat],
+                          [self.decals.bank_red, self.decals.boat_red],
+                          [self.decals.bank_gray, self.decals.boat_gray]]
 
         longest_bar = max([bar.surface.get_width() for bar in self.bars])
         width = BAR_SPACING * 2 + longest_bar + 36 + 33
@@ -35,7 +37,7 @@ class GroupOfBars(ClickableBox):
     def GetSurface(self):
         self.surface.fill((self.themes.group_background, self.themes.group_background_hover)[self.hover])
         for i, bar in enumerate(self.bars):
-            self.surface.blit(self.bar_icons[i], (BAR_SPACING + 31, BAR_SPACING + i * 31))
+            self.surface.blit(self.bar_icons[self.themes.theme_index][i], (BAR_SPACING + 31, BAR_SPACING + i * 31))
             self.surface.blit(bar.GetSurface(), (BAR_SPACING + 31 + 33, 5 + BAR_SPACING + i * 31))
         self.hitman_box.Draw(self.surface)
         return self.surface
